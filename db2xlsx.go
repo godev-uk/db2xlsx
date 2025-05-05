@@ -31,6 +31,7 @@ type DatabaseTable struct {
 }
 
 const outputFilePermissions = 0644
+const maxSheetNameLength = 31
 
 // Use var instead of const for SQL queries because heredoc.Doc returns
 // a string that cannot be evaluated at compile-time
@@ -155,30 +156,35 @@ func main() {
 	}
 
 	for t := range tables {
-		_, err := f.NewSheet(tables[t].name)
+		sheetName := tables[t].name
+		if len(sheetName) > maxSheetNameLength {
+			sheetName = tables[t].name[:maxSheetNameLength]
+		}
+
+		_, err := f.NewSheet(sheetName)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		f.SetCellValue(tables[t].name, "A1", "Column Name")
-		f.SetCellValue(tables[t].name, "B1", "Column Default")
-		f.SetCellValue(tables[t].name, "C1", "Is Nullable")
-		f.SetCellValue(tables[t].name, "D1", "Data Type")
-		f.SetCellValue(tables[t].name, "E1", "Column Type")
-		f.SetCellValue(tables[t].name, "F1", "Column Key")
+		f.SetCellValue(sheetName, "A1", "Column Name")
+		f.SetCellValue(sheetName, "B1", "Column Default")
+		f.SetCellValue(sheetName, "C1", "Is Nullable")
+		f.SetCellValue(sheetName, "D1", "Data Type")
+		f.SetCellValue(sheetName, "E1", "Column Type")
+		f.SetCellValue(sheetName, "F1", "Column Key")
 
-		f.SetCellStyle(tables[t].name, "A1", "F1", boldStyle)
+		f.SetCellStyle(sheetName, "A1", "F1", boldStyle)
 
 		for c := range tables[t].columns {
 			row := strconv.Itoa(c + 2)
 
-			f.SetCellValue(tables[t].name, "A"+row, tables[t].columns[c].column_name)
-			f.SetCellValue(tables[t].name, "B"+row, tables[t].columns[c].column_default)
-			f.SetCellValue(tables[t].name, "C"+row, tables[t].columns[c].is_nullable)
-			f.SetCellValue(tables[t].name, "D"+row, tables[t].columns[c].data_type)
-			f.SetCellValue(tables[t].name, "E"+row, tables[t].columns[c].column_type)
-			f.SetCellValue(tables[t].name, "F"+row, tables[t].columns[c].column_key)
+			f.SetCellValue(sheetName, "A"+row, tables[t].columns[c].column_name)
+			f.SetCellValue(sheetName, "B"+row, tables[t].columns[c].column_default)
+			f.SetCellValue(sheetName, "C"+row, tables[t].columns[c].is_nullable)
+			f.SetCellValue(sheetName, "D"+row, tables[t].columns[c].data_type)
+			f.SetCellValue(sheetName, "E"+row, tables[t].columns[c].column_type)
+			f.SetCellValue(sheetName, "F"+row, tables[t].columns[c].column_key)
 		}
 	}
 
