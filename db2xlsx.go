@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"syscall"
 	"time"
@@ -28,6 +29,8 @@ type DatabaseTable struct {
 	name    string
 	columns []DatabaseColumn
 }
+
+const outputFilePermissions = 0644
 
 // Use var instead of const for SQL queries because heredoc.Doc returns
 // a string that cannot be evaluated at compile-time
@@ -189,6 +192,10 @@ func main() {
 	}
 
 	if err := f.SaveAs("test.xlsx"); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := os.Chmod("test.xlsx", outputFilePermissions); err != nil {
 		log.Fatal(err)
 	}
 
