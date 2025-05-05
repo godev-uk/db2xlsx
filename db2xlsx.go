@@ -67,11 +67,13 @@ func main() {
 	var database string
 	var hostname string
 	var port int
+	var outputFile string
 
 	flag.StringVar(&username, "username", "", "Username")
 	flag.StringVar(&database, "database", "", "Database name")
 	flag.StringVar(&hostname, "hostname", "", "Hostname")
 	flag.IntVar(&port, "port", 3306, "Port number (if not default)")
+	flag.StringVar(&outputFile, "output-file", "", "Output file")
 
 	flag.Parse()
 
@@ -199,11 +201,11 @@ func main() {
 		}
 	}
 
-	if err := f.SaveAs("test.xlsx"); err != nil {
+	if err := f.SaveAs(outputFile); err != nil {
 		log.Fatal(err)
 	}
 
-	if err := os.Chmod("test.xlsx", outputFilePermissions); err != nil {
+	if err := os.Chmod(outputFile, outputFilePermissions); err != nil {
 		log.Fatal(err)
 	}
 
