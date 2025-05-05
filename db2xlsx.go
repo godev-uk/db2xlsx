@@ -66,10 +66,12 @@ func main() {
 	var username string
 	var database string
 	var hostname string
+	var port int
 
 	flag.StringVar(&username, "username", "", "Username")
 	flag.StringVar(&database, "database", "", "Database name")
 	flag.StringVar(&hostname, "hostname", "", "Hostname")
+	flag.IntVar(&port, "port", 3306, "Port number (if not default)")
 
 	flag.Parse()
 
@@ -83,7 +85,7 @@ func main() {
 
 	fmt.Println()
 
-	dsn := username + ":" + password + "@tcp(" + hostname + ")/" + database
+	dsn := username + ":" + password + "@tcp(" + hostname + ":" + strconv.Itoa(port) + ")/" + database
 	db, err := sql.Open("mysql", dsn)
 
 	if err != nil {
