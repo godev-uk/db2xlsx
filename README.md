@@ -11,6 +11,8 @@ It is intended for a very simple use case where a database needs to be
 visualised in a user-friendly format (XLSX is more friendly to a lot of
 users, especially those who are not DBAs).
 
+db2xlsx is a [godev.uk](https://godev.uk/open-source) open source project.
+
 ## Contributing
 
 If you would like to contribute to this repository, please open an issue
