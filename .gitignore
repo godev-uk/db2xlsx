@@ -26,3 +26,6 @@ go.work.sum
 
 # Ignore any XLSX files built in this directory
 *.xlsx
+
+# Ignore binary on *nix
+db2xlsx
