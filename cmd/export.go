@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"syscall"
 	"time"
@@ -242,12 +243,6 @@ func inTableIncludes(tableIncludes []string, tableName string) bool {
 	if len(tableIncludes) == 0 {
 		return true
 	} else {
-		for ti := range tableIncludes {
-			if tableIncludes[ti] == tableName {
-				return true
-			}
-		}
+		return slices.Contains(tableIncludes, tableName)
 	}
-
-	return false
 }
