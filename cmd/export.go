@@ -74,6 +74,7 @@ var exportCmd = &cobra.Command{
 	Short: "Export database structure to Excel",
 	Run: func(cmd *cobra.Command, args []string) {
 		tables := []DatabaseTable{}
+		tableNames := []string{}
 		password := ""
 
 		if passwordPrompt {
@@ -115,6 +116,13 @@ var exportCmd = &cobra.Command{
 			}
 
 			tables = append(tables, table)
+			tableNames = append(tableNames, table.name)
+		}
+
+		for ti := range tableIncludes {
+			if !slices.Contains(tableNames, tableIncludes[ti]) {
+				log.Fatal("Table " + tableIncludes[ti] + " does not exist")
+			}
 		}
 
 		for t := range tables {
